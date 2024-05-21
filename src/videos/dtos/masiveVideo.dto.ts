@@ -20,5 +20,5 @@ import { IsArray } from 'class-validator';
 
 export class CreateMasiveVideosDto {
   @IsArray()
-  readonly videos: [];
+  readonly videos: string[];
 }

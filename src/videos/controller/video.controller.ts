@@ -12,7 +12,7 @@ import { VideoService } from '../services/video.service';
 import { QueryResult } from 'mysql2';
 import { MasiveVideoService } from '../services/masive-video.service';
 import { CreateVideoDto, UpdateVideoDto } from '../dtos/video.dto';
-//import { CreateMasiveVideosDto } from '../dtos/masiveVideo.dto';
+import { CreateMasiveVideosDto } from '../dtos/masiveVideo.dto';
 
 @Controller('video')
 export class VideoController {
@@ -27,10 +27,10 @@ export class VideoController {
   }
 
   @Post('/sincronization')
-  createMasive(@Body() payload: any) {
+  createMasive(@Body() payload: CreateMasiveVideosDto) {
     const { videos } = payload;
     console.log(videos);
-    return this.masiveVideoService.createMasive(videos);
+    //return this.masiveVideoService.createMasive(JSON.parse(videos));
   }
 
   @Get('/sincronization/all')
