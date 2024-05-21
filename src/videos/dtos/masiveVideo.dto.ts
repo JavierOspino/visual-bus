@@ -1,4 +1,4 @@
-import { IsArray, IsString } from 'class-validator';
+import { IsArray } from 'class-validator';
 //import { Type } from 'class-transformer';
 
 /* type Video = {
@@ -7,7 +7,7 @@ import { IsArray, IsString } from 'class-validator';
   fechaHora: string;
 }; */
 
-class VideoData {
+/* class VideoData {
   @IsString()
   readonly codigoDispositivo: string;
 
@@ -16,9 +16,9 @@ class VideoData {
 
   @IsString()
   readonly fechaHora: string;
-}
+} */
 
 export class CreateMasiveVideosDto {
   @IsArray()
-  readonly videos: VideoData[];
+  readonly videos: [];
 }
