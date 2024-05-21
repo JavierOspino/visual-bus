@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Pool, QueryResult } from 'mysql2/promise';
-import { CreateMasiveVideosDto } from '../dtos/masiveVideo.dto';
 type Video = {
   codigoDispositivo: string;
   codigoVideo: string;
@@ -17,25 +16,61 @@ export class MasiveVideoService {
     return data;
   }
 
-  async createMasive(payload: CreateMasiveVideosDto): Promise<object> {
-    let query = '';
+  async createMasive(
+    videos: {
+      codigoDispositivo: string;
+      codigoVideo: string;
+      fechaHora: string;
+    }[],
+  ): Promise<object> {
     try {
-      payload.map((video: Video) => {
-        query += `('${video.codigoDispositivo}','${video.codigoVideo}','${video.fechaHora}'),`;
-      });
+      const sql = `INSERT INTO datos_dispositivo_video (codigo_dispositivo, codigo_video, fecha_hora_reproduccion) VALUES ?`;
+      //query += `('${video.codigoDispositivo}','${video.codigoVideo}','${video.fechaHora}'),`;
 
-      const sql = `INSERT INTO datos_dispositivo_video (codigo_dispositivo, codigo_video, fecha_hora_reproduccion) VALUES ${query}`;
+      const value = videos.map((video: Video) => [
+        video.codigoDispositivo,
+        video.codigoVideo,
+        video.fechaHora,
+      ]);
 
-      const [response] = await this.pool.query<QueryResult>(
-        sql.slice(0, sql.length - 1),
-      );
+      await this.pool.query<QueryResult>(sql, [value]);
 
       return {
-        inserts: response['affectedRows'],
+        inserts: 'success',
       };
     } catch (error) {
-      console.log({ error });
-      return error;
+      return {
+        inserts: error,
+      };
     }
   }
 }
+
+/*
+// src/video/video.service.ts
+import { Injectable } from '@nestjs/common';
+import { InjectMysql, Mysql } from '@nestjs/mysql';
+
+@Injectable()
+export class VideoService {
+  constructor(@InjectMysql() private readonly mysql: Mysql) {}
+
+  async insertVideos(videos: { codigoDispositivo: string; codigoVideo: string; fechaHora: string; }[]): Promise<void> {
+    const connection = await this.mysql.getConnection();
+
+    const query = `
+      INSERT INTO videos (codigoDispositivo, codigoVideo, fechaHora)
+      VALUES ?
+    `;
+
+    const values = videos.map(video => [
+      video.codigoDispositivo,
+      video.codigoVideo,
+      video.fechaHora,
+    ]);
+
+    await connection.query(query, [values]);
+    connection.release();
+  }
+}
+ */

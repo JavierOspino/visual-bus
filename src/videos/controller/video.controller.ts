@@ -28,7 +28,8 @@ export class VideoController {
 
   @Post('/sincronization')
   createMasive(@Body() payload: CreateMasiveVideosDto) {
-    return this.masiveVideoService.createMasive(payload);
+    const { videos } = payload;
+    return this.masiveVideoService.createMasive(videos);
   }
 
   @Get('/sincronization/all')
