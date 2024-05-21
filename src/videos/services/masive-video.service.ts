@@ -1,10 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Pool, QueryResult } from 'mysql2/promise';
-type Video = {
-  codigoDispositivo: string;
-  codigoVideo: string;
-  fechaHora: string;
-};
+
 @Injectable()
 export class MasiveVideoService {
   constructor(@Inject('MYSQL') private pool: Pool) {}
@@ -27,7 +23,7 @@ export class MasiveVideoService {
       const sql = `INSERT INTO datos_dispositivo_video (codigo_dispositivo, codigo_video, fecha_hora_reproduccion) VALUES ?`;
       //query += `('${video.codigoDispositivo}','${video.codigoVideo}','${video.fechaHora}'),`;
 
-      const value = videos.map((video: Video) => [
+      const value = videos.map((video) => [
         video.codigoDispositivo,
         video.codigoVideo,
         video.fechaHora,
