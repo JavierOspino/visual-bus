@@ -1,4 +1,3 @@
-import { PartialType } from '@nestjs/mapped-types';
 import {
   ArrayMinSize,
   IsArray,
@@ -17,7 +16,7 @@ class VideoData {
   readonly fechaHora: string;
 }
 
-export class CreateMasiveVideosDto extends PartialType(VideoData) {
+export class CreateMasiveVideosDto {
   [x: string]: any;
   @IsArray()
   @ArrayMinSize(1)
